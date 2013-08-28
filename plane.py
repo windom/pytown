@@ -111,6 +111,9 @@ class InfinitePlane(Plane):
                 sy * self.sector_height + iy)
     
     def get_extents(self):
+        if not self.sector_map.keys():
+            return None
+    
         min_sx = min([x for x, y in self.sector_map.keys()])
         min_sy = min([y for x, y in self.sector_map.keys()])
         max_sx = max([x for x, y in self.sector_map.keys()])
@@ -144,7 +147,11 @@ class InfinitePlane(Plane):
         return (min_x, min_y, max_x, max_y)
     
     def compacted(self):
-        min_x, min_y, max_x, max_y = self.get_extents()       
+        extents = self.get_extents()
+        if extents: 
+            min_x, min_y, max_x, max_y = extents
+        else:
+            min_x, min_y, max_x, max_y = 0, 0, -1, -1
         compact_plane = FixedPlane(max_x - min_x + 1, max_y - min_y + 1, self.empty_cell)
         for x, y, c in self.get_cells(min_x, min_y, compact_plane.width, compact_plane.height):
             compact_plane[x - min_x][y - min_y] = c

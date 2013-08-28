@@ -1,10 +1,15 @@
 from plane import *
 
 class Town(InfinitePlane):
-    pass
 
+    def generate(self):
+        #self.set_cells(-1,-1,5,5,'x')
+        pass
+    
     def draw(self):
         return plane_to_html(self.compacted())
-        
 
-print(Town().draw())
+
+town = Town()
+town.generate()
+print(town.draw())
